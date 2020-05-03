@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Marker Cluster Webmap</title>
+  <meta charset="utf-8" />
+  <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.6.2/leaflet.css" />
+	<link rel="stylesheet" href="MarkerCluster.css" />
+<link rel="stylesheet" href="MarkerCluster.Default.css" />
+</head>
+<body>
+  <div id="map" style="width: 900px; height: 600px"></div>
+  <script src="http://cdn.leafletjs.com/leaflet-0.6.2/leaflet.js"></script>    
+  <script src="Kerala_centroid.js"></script>
+  <script src="leaflet.markercluster-src.js"></script>
+  <script src="/js/leaflet-0.7.2/leaflet.ajax.min.js"></script>
+  <script>
+	var map = L.map('map').setView([10.2980413,76.9844166], 8);
+	L.tileLayer('http://{s}.www.toolserver.org/tiles/bw-mapnik/{z}/{x}/{y}.png').addTo(map); //will be our basemap.
+	
+	var markers = L.markerClusterGroup();
+	
+	for ( var i = 0; i < markers.length; ++i ){
+  var popup = markers[i].DISTRICT +
+			  '<br/>' + markers[i].Density}
+  		  		  
+	var Kerala_centroid = L.geoJson(points, {
+		onEachFeature: function (feature, layer) //functionality on click on feature
+			{
+			layer.bindPopup('<b>DISTRICT:</b>' + feature.properties.DISTRICT + 
+			'<br><b>ACTIVE:</b>'+feature.properties.Density ); //just to show something in the popup. could be part of the geojson as well!
+			}
+		});
+		
+	markers.addLayer(Kerala_centroid); // add it to the cluster group
+	map.addLayer(markers);		// add it to the map
+	map.fitBounds(markers.getBounds()); //set view on the cluster extend
+  </script>
+ </body>
+</html>
